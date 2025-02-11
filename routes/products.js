@@ -15,8 +15,10 @@ router.get('/',
         });
         return res.json(products);
     }
+
     const products = await findAll({
         attributes: { exclude: excludeList },
+        where: { ...req.query },
         include: ['category', 'colors']
     });
     res.json(products);
