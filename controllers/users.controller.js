@@ -1,5 +1,6 @@
 const db = require("../models");
 const { compare } = require("bcrypt");
+const lzjs = require('lzjs')
 const {sign} = require("jsonwebtoken");
 const User = db.user;
 
@@ -31,8 +32,13 @@ exports.create = async (body) => {
         return { message: `Duplicate entry ${phone} for key "users.phone"`, status: 409 }
       }
     }
-    const res = await User.create({ ...body })
-    return { data: res, status: 200 }
+    const user = await User.create({ ...body })
+    const token = sign(
+      { userId: user.id, isAdmin: user.isAdmin },
+      process.env.SECRET_KEY,
+      { expiresIn: '24h' }
+    );
+    return { data: token, status: 200 }
   }
   catch (e) {
     console.error(e);
@@ -42,10 +48,14 @@ exports.create = async (body) => {
 exports.login = async (body) => {
   try {
     const { phone, password } = body;
-    const user = await User.findOne({where: {phone: phone}});
-    const passwordMatch = await compare(password, user.passwordHash);
+    const passwordDecompressed = lzjs.decompressFromBase64(password)
+    const user = await User.findOne({ where: { phone: phone } });
+    if (!user) {
+      return { data: 'Authentication failed - no such user', status: 401 };
+    }
+    const passwordMatch = await compare(passwordDecompressed, user.passwordHash);
     if (!passwordMatch) {
-      return { data: 'Authentication failed', status: 401 };
+      return { data: 'Authentication failed - incorrect password', status: 401 };
     }
     const token = sign(
       { userId: user.id, isAdmin: user.isAdmin },
