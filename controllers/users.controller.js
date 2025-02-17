@@ -1,6 +1,6 @@
 const db = require("../models");
 const { compare } = require("bcrypt");
-const lzjs = require('lzjs')
+const encrypted = require('xor-crypt')
 const {sign} = require("jsonwebtoken");
 const User = db.user;
 
@@ -48,7 +48,8 @@ exports.create = async (body) => {
 exports.login = async (body) => {
   try {
     const { phone, password } = body;
-    const passwordDecompressed = lzjs.decompressFromBase64(password)
+    const passwordDecompressed = encrypted(password, 9)
+
     const user = await User.findOne({ where: { phone: phone } });
     if (!user) {
       return { data: 'Authentication failed - no such user', status: 401 };
@@ -62,7 +63,7 @@ exports.login = async (body) => {
       process.env.SECRET_KEY,
       { expiresIn: '24h' }
     );
-    return { data: token, status: 200 };
+    return { data: { token: token, user: user }, status: 200 };
   } catch (e) {
     console.error(e);
   }

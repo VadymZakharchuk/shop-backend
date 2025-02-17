@@ -7,8 +7,6 @@ const categoriesRouter = require('./routes/categories');
 const productsRouter = require('./routes/products');
 const loggerMiddleware = require('./middleware/logger')
 const errorMiddleware = require('./middleware/error')
-const Sequelize = require("sequelize");
-const CONNECTION_PARAMS = require("./config/mySQL.config");
 
 require('dotenv').config()
 
@@ -19,7 +17,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 app.use(cors())
-app.use(loggerMiddleware)
+// app.use(loggerMiddleware)
 
 app.use('/public', express.static(__dirname+"/public"))
 

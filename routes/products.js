@@ -15,11 +15,18 @@ router.get('/',
         });
         return res.json(products);
     }
+    const whereClause = {...req.query}
+    if ('limit' in whereClause) delete whereClause.limit
+    if ('offset' in whereClause) delete whereClause.offset
 
+    const limit = req.query.limit || 99
+    const offset = req.query.offset || 0
     const products = await findAll({
         attributes: { exclude: excludeList },
-        where: { ...req.query },
-        include: ['category', 'colors']
+        where: { ...whereClause },
+        include: ['category', 'colors'],
+        limit: +limit,
+        offset: +offset
     });
     res.json(products);
 });
