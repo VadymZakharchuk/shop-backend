@@ -1,6 +1,4 @@
 const db = require("../models");
-const Sequelize = require("sequelize");
-const { Op } = require('sequelize')
 const Favourite = db.favourite;
 
 exports.findAll = async (lang = 'uk', userId = 0) => {
@@ -10,7 +8,26 @@ exports.findAll = async (lang = 'uk', userId = 0) => {
     return await Favourite.findAll({
       attributes: { exclude: excludeList },
       where: { userId: userId },
-      include: ['product'],
+      include: [{
+        model: db.product,
+        as: 'product',
+        foreignKey: 'productId',
+        attributes: { exclude: excludeList },
+        include: [
+          {
+            model: db.colors,
+            as: 'colors',
+            foreignKey: 'colorId',
+            attributes: { exclude: excludeList },
+          },
+          {
+            model: db.category,
+            as: 'category',
+            foreignKey: 'categoryId',
+            attributes: { exclude: excludeList },
+          }
+        ]
+      }],
     })
   }
   catch (e) {
