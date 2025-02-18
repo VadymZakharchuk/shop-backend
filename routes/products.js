@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/',
   async (req, res) => {
     const lang = req.headers['accept-language'] || 'en'
-    const excludeList = lang === 'en' ? ['name_en', 'description_en'] : ['name_uk', 'description_uk']
+    const excludeList = lang === 'uk' ? ['name_en', 'description_en'] : ['name_uk', 'description_uk']
     if (req.query.id) {
         const products = await findAll({
             attributes: { exclude: excludeList },
