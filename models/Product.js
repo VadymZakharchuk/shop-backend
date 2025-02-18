@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     categoryId: {
       type: DataTypes.BIGINT,
       defaultValue: 0
-    },
+    }
   }, {
     timestamps: false
   });

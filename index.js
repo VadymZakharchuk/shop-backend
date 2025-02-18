@@ -5,6 +5,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const categoriesRouter = require('./routes/categories');
 const productsRouter = require('./routes/products');
+const favouritesRouter = require('./routes/favourites');
 const loggerMiddleware = require('./middleware/logger')
 const errorMiddleware = require('./middleware/error')
 
@@ -25,6 +26,7 @@ app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/favourites', favouritesRouter);
 
 app.set('view engine', 'ejs')
 app.use(errorMiddleware)
