@@ -34,3 +34,28 @@ exports.findAll = async (lang = 'uk', userId = 0) => {
     console.error(e);
   }
 };
+
+exports.add = async (body) => {
+  try {
+    if (!body.userId) return { message: 'User not found', status: 404 }
+    if (!body.productId) return { message: 'Product not found', status: 404 }
+    const isFavourite = await Favourite.findOne({ where: { userId: body.userId, productId: body.productId } })
+    if (isFavourite) return { message: 'Product already in favourites', status: 409 }
+    return await Favourite.create({...body})
+  }
+  catch (e) {
+    console.error(e);
+  }
+};
+
+exports.remove = async (body) => {
+  try {
+    if (!body.userId) return {message: 'User not found', status: 404}
+    if (!body.productId) return {message: 'Product not found', status: 404}
+    const isFavourite = await Favourite.findOne({where: {userId: body.userId, productId: body.productId}})
+    if (!isFavourite) return {message: 'Product not in favourites', status: 409}
+    return await Favourite.destroy({where: {userId: body.userId, productId: body.productId}})
+  } catch (e) {
+    console.error(e);
+  }
+}
