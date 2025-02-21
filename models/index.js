@@ -12,6 +12,7 @@ db.category = require("./Category")(sequelize, Sequelize);
 db.product = require("./Product")(sequelize, Sequelize);
 db.user = require("./User")(sequelize, Sequelize);
 db.colors = require("./Colors")(sequelize, Sequelize);
+db.sizes = require("./Sizes")(sequelize, Sequelize);
 db.favourite = require("./Favourites")(sequelize, Sequelize);
 
 db.category.hasMany(db.product, { as: "product" })
