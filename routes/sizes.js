@@ -4,7 +4,9 @@ const { findAll } = require("../controllers/sizes.controller");
 
 router.get('/',
   async (req, res) => {
-  const sizes = await findAll()
+  const sizes = await findAll({
+    where: req.query
+  })
   res.json(sizes);
 });
 

@@ -27,7 +27,6 @@ db.product.belongsTo(db.colors, {
     as: "colors",
 });
 
-
 db.product.hasOne(db.favourite);
 db.favourite.belongsTo(db.product,{
     foreignKey: "productId",

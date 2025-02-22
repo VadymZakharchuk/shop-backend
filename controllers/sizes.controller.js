@@ -5,7 +5,7 @@ const Sizes = db.sizes;
 
 exports.findAll = async (params) => {
   try {
-    return await Sizes.findAll()
+    return await Sizes.findAll(params);
   }
   catch (e) {
     console.error(e);

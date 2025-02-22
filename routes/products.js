@@ -1,6 +1,7 @@
 const express = require('express');
 const { findAll, create, update } = require("../controllers/products.controller");
 const verifyToken = require("../middleware/auth");
+const { Op } = require('sequelize')
 const router = express.Router();
 
 router.get('/',
@@ -16,8 +17,18 @@ router.get('/',
         return res.json(products);
     }
     const whereClause = {...req.query}
+
     if ('limit' in whereClause) delete whereClause.limit
     if ('offset' in whereClause) delete whereClause.offset
+    if ('size' in whereClause) {
+        const s = whereClause.size
+        delete whereClause.size
+        const t = s.split(',')
+        if (t.length === 1) whereClause.size = s
+        else {
+            whereClause.size = { [Op.or]: t }
+        }
+    }
 
     const limit = req.query.limit || 99
     const offset = req.query.offset || 0
