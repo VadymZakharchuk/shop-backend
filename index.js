@@ -7,6 +7,7 @@ const categoriesRouter = require('./routes/categories');
 const productsRouter = require('./routes/products');
 const favouritesRouter = require('./routes/favourites');
 const sizesRouter = require('./routes/sizes');
+const colorsRouter = require('./routes/colors');
 const loggerMiddleware = require('./middleware/logger')
 const errorMiddleware = require('./middleware/error')
 
@@ -29,6 +30,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/favourites', favouritesRouter);
 app.use('/api/sizes', sizesRouter);
+app.use('/api/colors', colorsRouter);
 
 app.set('view engine', 'ejs')
 app.use(errorMiddleware)
