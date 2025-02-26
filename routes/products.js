@@ -20,6 +20,9 @@ router.get('/',
 
     if ('limit' in whereClause) delete whereClause.limit
     if ('offset' in whereClause) delete whereClause.offset
+    if ('is_new' in whereClause) {
+        whereClause.is_new = whereClause.is_new === 'true'
+    }
     if ('size' in whereClause) {
         const s = whereClause.size
         delete whereClause.size
@@ -29,7 +32,7 @@ router.get('/',
             whereClause.size = { [Op.or]: t }
         }
     }
-
+      console.log('whereClause -> ', whereClause)
     const limit = req.query.limit || 99
     const offset = req.query.offset || 0
     const products = await findAll({
