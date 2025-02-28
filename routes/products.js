@@ -32,7 +32,7 @@ router.get('/',
             whereClause.size = { [Op.or]: t }
         }
     }
-      console.log('whereClause -> ', whereClause)
+
     const limit = req.query.limit || 99
     const offset = req.query.offset || 0
     const products = await findAll({

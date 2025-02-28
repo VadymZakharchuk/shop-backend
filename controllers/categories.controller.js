@@ -5,10 +5,13 @@ const Category = db.category;
 
 exports.findAll = async (params) => {
   try {
-    let lang = params || ''
+    let lang = params.lang || ''
     if (!lang) return await Category.findAll()
+    delete params.lang
     const excludeList = lang === 'en' ? ['name_uk', 'description_uk'] : ['name_en', 'description_en']
+    const id = +params.id
     return await Category.findAll({
+      where: { id: id },
       attributes: {
         exclude: excludeList
       }
