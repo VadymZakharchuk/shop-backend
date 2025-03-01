@@ -56,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
     },
+    views_count: {
+      type: DataTypes.BIGINT,
+      defaultValue: 0
+    },
     categoryId: {
       type: DataTypes.BIGINT,
       defaultValue: 0
