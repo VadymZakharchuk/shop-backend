@@ -29,3 +29,14 @@ exports.update = async (body, id) => {
     console.error(e);
   }
 };
+
+exports.increaseCounter = async (id) => {
+  try {
+    const data = await Product.findByPk(id)
+    const res = await Product.update({ views_count: data.views_count + 1 }, { where: { id: id } })
+    return { data: res, status: 200 }
+  }
+  catch (e) {
+    console.error(e);
+  }
+};

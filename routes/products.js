@@ -1,5 +1,5 @@
 const express = require('express');
-const { findAll, create, update } = require("../controllers/products.controller");
+const { findAll, create, update, increaseCounter } = require("../controllers/products.controller");
 const verifyToken = require("../middleware/auth");
 const { Op } = require('sequelize')
 const router = express.Router();
@@ -59,4 +59,11 @@ router.put('/:id', verifyToken,
     res.json(product);
 });
 
+router.put('/counter/:id',
+  async (req, res) => {
+      const token = req.body.token || false
+      if (token) { res.json({ data: 'Admin access'}); return }
+      const product = await increaseCounter(req.params.id);
+      res.json(product);
+  });
 module.exports = router;
