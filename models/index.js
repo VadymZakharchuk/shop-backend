@@ -15,7 +15,7 @@ db.colors = require("./Colors")(sequelize, Sequelize);
 db.sizes = require("./Sizes")(sequelize, Sequelize);
 db.favourite = require("./Favourites")(sequelize, Sequelize);
 db.orders = require("./Orders")(sequelize, Sequelize);
-db.db_vars = require("./DbVars")(sequelize, Sequelize);
+db.dbvars = require("./DbVars")(sequelize, Sequelize);
 
 db.category.hasMany(db.product, { as: "product" })
 db.product.belongsTo(db.category, {
@@ -35,21 +35,10 @@ db.favourite.belongsTo(db.product,{
     as: "product"
 });
 
-db.orders.hasMany(db.product, { as: "product" });
-db.product.belongsTo(db.orders, {
-    foreignKey: "orderId",
-    as: "orders",
-});
+db.orders.hasOne(db.product, { foreignKey: 'id', as: "product" });
 
-db.orders.hasMany(db.user, { as: "user" });
-db.user.belongsTo(db.orders, {
-    foreignKey: "userId",
-    as: "orders",
-});
+db.orders.hasOne(db.user, { foreignKey: 'id',  as: "user" });
 
-db.orders.hasMany(db.db_vars, { as: "status" });
-db.db_vars.belongsTo(db.orders, {
-    foreignKey: "statusId",
-    as: "orders",
-});
+db.orders.hasOne(db.dbvars, { foreignKey: 'id', as: "status" });
+
 module.exports = db;

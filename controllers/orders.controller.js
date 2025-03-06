@@ -24,3 +24,16 @@ exports.newOrderNo = async () => {
     console.error(e);
   }
 };
+
+exports.create = async(body) => {
+  console.log(body)
+  try {
+    for (const item of Object.values(body)) {
+      await Orders.create({...item});
+    }
+    return true
+  }
+  catch (e) {
+    console.error(e);
+  }
+}
