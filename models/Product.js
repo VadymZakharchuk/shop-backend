@@ -52,6 +52,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
     },
+    ordered: {
+      type: DataTypes.NUMERIC,
+      allowNull: true
+    },
     archived: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
