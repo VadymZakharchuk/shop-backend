@@ -27,7 +27,6 @@ exports.newOrderNo = async () => {
 };
 
 exports.create = async(body) => {
-  console.log(body)
   const bodyArr = Object.values(body).map(item => {
     return {
       productId: item.productId,
@@ -41,7 +40,8 @@ exports.create = async(body) => {
   const availableProducts = await Product.findAll({
     attributes: [
       'id',
-      'quantity'
+      'quantity',
+      'sold'
     ],
     where: {
       id: {
@@ -49,6 +49,7 @@ exports.create = async(body) => {
       }
     }
   })
+
   bodyArr.forEach((item) => {
     const orderedProduct = availableProducts.filter((product) => product.id === item.productId)[0]
     if (orderedProduct.quantity - item.quantity < 0) item.isAvailable = false;
@@ -56,6 +57,17 @@ exports.create = async(body) => {
   const isOrderAvailable = !bodyArr.some((item) => item.isAvailable === false)
   if (isOrderAvailable) {
     try {
+      for (const item of bodyArr) {
+        const temp = availableProducts.filter((product) => product.id === item.productId)[0];
+        const count = temp.quantity - item.quantity;
+        const sold = temp.sold + item.quantity;
+        await Product.update(
+          {
+            quantity: count,
+            sold: sold,
+          },
+          { where: { id: item.productId } });
+      }
       for (const item of Object.values(body)) {
         await Orders.create({...item});
       }

@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
     },
-    ordered: {
+    sold: {
       type: DataTypes.NUMERIC,
       allowNull: true
     },
