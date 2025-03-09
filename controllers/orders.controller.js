@@ -71,7 +71,7 @@ exports.create = async(body) => {
       for (const item of Object.values(body)) {
         await Orders.create({...item});
       }
-      return { message: "created"};
+      return { message: "created", orderNo: body[0].orderNo };
     } catch (e) {
       console.error(e);
     }
